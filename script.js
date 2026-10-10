@@ -1,18 +1,7 @@
 (() => {
-  const store = {
-    get: (k) => { try { return localStorage.getItem(k); } catch { return null; } },
-    set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* private mode */ } },
-  };
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const root = document.documentElement;
-  const saved = store.get('qdata-theme');
-  if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
-  const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-  document.querySelector('.theme-toggle')?.addEventListener('click', () => {
-    root.dataset.theme = isDark() ? 'light' : 'dark';
-    store.set('qdata-theme', root.dataset.theme);
-  });
+  // theme toggle and saved choice live in brand/brand.js
 
   document.querySelectorAll('[data-tabs]').forEach((box) => {
     const tabs = [...box.querySelectorAll('[role="tab"]')];
