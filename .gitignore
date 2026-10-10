@@ -1,33 +1,5 @@
-# Ignore everything
-/*
-Makefile
-AGENTS.md
-DEV.md
-lib*
-
-# Allow .gitignore itself
-!.gitignore
-
-# Allow specific files in repo root
-!README.md
-!LICENSE
-
-# Allow a specific directory and its contents
-!tutorials/
-!tutorials/**
-tutorials/**/*.db
-tutorials/**/*.html
-tutorials/**/output/*
-
-# Allow another directory but ignore a subdirectory inside it
-examples/
-examples/**
-examples/**/*.db
-examples/**/*.html
-examples/**/*.py
+dist/
+media/**/out/
+*.db
 examples/**/output/*
-
-!static/
-!static/*
-!index.html
-!demo.gif
+!examples/**/output/.gitkeep

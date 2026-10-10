@@ -17,7 +17,7 @@ A terminal (also called the command line or shell) is a text-based interface whe
 **Linux**
 - Most desktop environments have a keyboard shortcut like `Ctrl + Alt + T`.
 - Or right-click the desktop and choose "Open Terminal".
-- If you installed cuiqData system-wide, make sure the install directory is on your `PATH` (the installer will tell you how).
+- If you installed qData system-wide, make sure the install directory is on your `PATH` (the installer will tell you how).
 
 ---
 
@@ -66,9 +66,9 @@ Type the command, then press `Enter`. The terminal does nothing until you press 
 
 Example:
 ```
-cuiqdata run sql
+qdata run sql
 ```
-Type that, press `Enter`, and cuiqData starts the pipeline.
+Type that, press `Enter`, and qData starts the pipeline.
 
 ---
 
@@ -106,7 +106,7 @@ Nothing runs until you press `Enter`. If a command seems to do nothing, check th
 
 **Wrong directory**
 
-If cuiqData says it cannot find your SQL files, you are probably in the wrong folder. Run `pwd` to see where you are, then `cd` to the right place.
+If qData says it cannot find your SQL files, you are probably in the wrong folder. Run `pwd` to see where you are, then `cd` to the right place.
 
 **Capital letters on Linux/macOS**
 
@@ -114,4 +114,4 @@ File names are case-sensitive on Linux and macOS. `SQL` and `sql` are different 
 
 ---
 
-Now that you are comfortable with the terminal, head back to the [Quick Start](../README.md#-quick-start-demo-your-first-pipeline) to run your first pipeline.
+Now that you are comfortable with the terminal, head back to the [Quick Start](../README.md#quickstart) to run your first pipeline.

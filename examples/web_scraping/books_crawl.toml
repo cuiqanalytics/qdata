@@ -1,0 +1,47 @@
+# Crawl a paginated catalogue by following "next" links. Requires qData Pro.
+# Run: qdata run books_crawl.toml   (a second run within 12h is served from the page cache)
+
+[config]
+project_name = "web_scraping"
+
+[pipeline]
+name = "books_crawl"
+description = "Every book on the first 5 catalogue pages of books.toscrape.com"
+
+[[steps]]
+name = "crawl"
+type = "scrape"
+output_table = "raw_pages"   # url, depth, status, content_type, fetched_at, from_cache, error, body, body_hash
+urls = ["https://books.toscrape.com/catalogue/page-1.html"]
+# Or enumerate pages instead of following links:
+#   urls = ["https://books.toscrape.com/catalogue/page-{page}.html"]
+#   pages = { from = 1, to = 5 }
+# Or seed from SQL: urls_query = "SELECT url FROM seeds"
+follow = { xpath = "//li[@class='next']/a/@href", max_depth = 4, same_host = true }
+max_pages = 50
+rate_limit = "2/s"         # per host; robots.txt Crawl-delay wins if slower
+concurrency = 2
+respect_robots = true
+cache = "12h"
+max_error_pct = 20
+user_agent = "qdata-example (+https://github.com/cuiqanalytics/qdata)"
+
+[[steps]]
+name = "extract_books"
+type = "transform"
+output_table = "books"
+query = """
+CREATE OR REPLACE TABLE books AS
+SELECT url AS page,
+       unnest(xpath_all(body, '//article[@class="product_pod"]/h3/a/@title'))                             AS title,
+       abs_url(url, unnest(xpath_all(body, '//article[@class="product_pod"]/h3/a/@href')))                AS link,
+       regexp_replace(unnest(xpath_all(body, '//article[@class="product_pod"]//p[@class="price_color"]')),
+                      '[^0-9.]', '', 'g')::DECIMAL(10, 2)                                                    AS price_gbp
+FROM raw_pages
+WHERE status = 200
+"""
+
+[[steps]]
+name = "export"
+type = "sink"
+destination = "./output/books_crawl.parquet"

@@ -1,0 +1,9 @@
+# Optional metadata for SQL pipeline
+# If present, values here override auto-detected values
+
+name = "daily_transaction_summary"
+description = "Ingest raw transactions, clean, aggregate by date/category, validate, and export"
+timeout_minutes = 60
+
+# Optional: specify sink destination if overriding export.sql location
+sink_destination = "./output/reports"

@@ -1,0 +1,35 @@
+# Fetch one live page and extract it with webbed. Works on the free tier.
+# Run: qdata run books.toml
+
+[config]
+project_name = "web_scraping"
+
+[pipeline]
+name = "books_to_scrape"
+description = "Book titles and prices from the books.toscrape.com sandbox"
+
+[[steps]]
+name = "fetch_home"
+type = "ingest"
+source = "https://books.toscrape.com/"   # http(s) sources are downloaded with retries
+output_table = "raw_page"                # columns: url, status, content_type, fetched_at, body, body_hash
+user_agent = "qdata-example (+https://github.com/cuiqanalytics/qdata)"
+retries = 3
+
+[[steps]]
+name = "extract_books"
+type = "transform"
+output_table = "books"
+query = """
+CREATE OR REPLACE TABLE books AS
+SELECT unnest(xpath_all(body, '//article[@class="product_pod"]/h3/a/@title'))                   AS title,
+       abs_url(url, unnest(xpath_all(body, '//article[@class="product_pod"]/h3/a/@href')))       AS link,
+       unnest(xpath_all(body, '//article[@class="product_pod"]//p[@class="price_color"]'))       AS price
+FROM raw_page
+WHERE status = 200
+"""
+
+[[steps]]
+name = "export"
+type = "sink"
+destination = "./output/books.csv"

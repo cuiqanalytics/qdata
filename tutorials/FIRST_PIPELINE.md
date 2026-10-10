@@ -1,6 +1,6 @@
 # Your First Pipeline
 
-This walkthrough takes you from zero to a working data pipeline in about five minutes. You should already have cuiqData installed. If you haven't done that yet, see the [Releases page](https://github.com/cuiqanalytics/cuiqdata/releases).
+This walkthrough takes you from zero to a working data pipeline in about five minutes. You should already have qData installed. If you haven't done that yet, see the [Releases page](https://github.com/cuiqanalytics/qdata/releases).
 
 Not familiar with the terminal? Read [Terminal Basics](TERMINAL_BASICS.md) first.
 
@@ -11,11 +11,11 @@ Not familiar with the terminal? Read [Terminal Basics](TERMINAL_BASICS.md) first
 Open a terminal and run:
 
 ```bash
-cuiqdata demo
+qdata demo
 cd demo
 ```
 
-`cuiqdata demo` creates a folder called `demo` with everything you need to try the tool:
+`qdata demo` creates a folder called `demo` with everything you need to try the tool:
 
 ```
 demo
@@ -34,7 +34,7 @@ Each `.sql` file is one pipeline step. The numeric prefix controls execution ord
 ## Step 2: Run the Pipeline
 
 ```bash
-cuiqdata run sql
+qdata run sql
 ```
 
 You should see output like this:
@@ -101,7 +101,7 @@ FROM ingest
 Now re-run:
 
 ```bash
-cuiqdata run sql
+qdata run sql
 ```
 
 Open `output/results.csv` again — the username column is now uppercase.
@@ -113,13 +113,13 @@ Open `output/results.csv` again — the username column is now uppercase.
 Run the pipeline a second time without changing anything:
 
 ```bash
-cuiqdata run sql
+qdata run sql
 ```
 
-Notice it is faster. cuiqData hashes the SQL content of each step. When a step's SQL has not changed since the last run, cuiqData skips re-executing it and loads the cached result instead.
+Notice it is faster. qData hashes the SQL content of each step. When a step's SQL has not changed since the last run, qData skips re-executing it and loads the cached result instead.
 
 In this example:
-- `001_ingest.sql` is unchanged — cuiqData skips it and uses the cached table.
+- `001_ingest.sql` is unchanged — qData skips it and uses the cached table.
 - `002_transform.sql` was already re-run after your edit, so it is also cached now.
 - `003_validate.sql` is unchanged — also cached.
 
@@ -132,15 +132,15 @@ This matters for real pipelines. If you have a slow ingestion step that pulls fr
 Suppose you only changed `002_transform.sql` and want to re-run from step 2 onwards, skipping step 1 entirely:
 
 ```bash
-cuiqdata run --start-step 2 sql
+qdata run --start-step 2 sql
 ```
 
-cuiqData loads the cached output from step 1 and picks up execution at step 2. This is useful when step 1 is expensive (a large file read or a database query) and you are iterating on the transformation logic.
+qData loads the cached output from step 1 and picks up execution at step 2. This is useful when step 1 is expensive (a large file read or a database query) and you are iterating on the transformation logic.
 
 ---
 
 ## Next Steps
 
 - Browse the `examples/` directory in this repo for real-world pipeline patterns (multi-source ingestion, date templating, CSV exports, and more).
-- Try TOML mode for more control: `cuiqdata init my_project && cd my_project && cuiqdata run pipeline.toml`
+- Try TOML mode for more control: `qdata init my_project && cd my_project && qdata run pipeline.toml`
 - Read the full README for advanced features: caching flags, logging, the background scheduler (Pro), and HTML reports (Pro).
