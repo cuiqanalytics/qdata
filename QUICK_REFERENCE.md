@@ -10,7 +10,7 @@
 | `qdata exec "<sql>" [dir]` | Run ad-hoc SQL, against `dir/cache.db` when present |
 | `qdata docs` | Built-in documentation |
 | `qdata report <pipeline>` | HTML run report |
-| `qdata server start` / `stop` | Background scheduler and REST API on 127.0.0.1:5000 (Pro) |
+| `qdata server start` / `stop` | Background scheduler, REST API and browser UI (`/ui`) on 127.0.0.1:5000 (Pro) |
 | `qdata schedule add\|list\|remove\|update` | Cron schedules (Pro) |
 | `qdata license install <KEY>` / `status` | Manage the license |
 

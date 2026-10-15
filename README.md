@@ -56,7 +56,7 @@ qdata() { docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/work" ghcr.io/cui
 
 - **Apple Silicon (M1–M4):** the image is `linux/amd64`, so add `--platform linux/amd64`.
 - **Pro license:** add `-v ~/.cuiq:/home/qdata/.cuiq:ro`.
-- **Scheduler and API:** run `docker run -d -p 5000:5000 -v "$PWD:/work" -v ~/.cuiq:/home/qdata/.cuiq:ro ghcr.io/cuiqanalytics/qdata scheduler 0.0.0.0 5000`.
+- **Scheduler and API:** run `docker run -d -p 5000:5000 -v "$PWD:/work" -v ~/.cuiq:/home/qdata/.cuiq:ro ghcr.io/cuiqanalytics/qdata scheduler 0.0.0.0 5000`. The browser UI is then at http://localhost:5000/ui.
 
 ---
 
@@ -118,6 +118,19 @@ See [`examples/web_scraping`](examples/web_scraping).
 
 ---
 
+## Browser UI (Pro)
+
+```bash
+qdata server start           # then open http://127.0.0.1:5000/ui
+```
+
+Build a pipeline by dragging input, transform, validate and output steps onto a canvas and
+writing each step's SQL. Switch to Monitor and press Run to watch each step go from pending to
+running, completed or cached. Click a failed step to see the error. Each step is saved as a
+numbered `.sql` file in the pipeline folder, so `qdata run` and git work on the same files.
+
+---
+
 ## Use it with Claude Code
 
 ```bash
@@ -130,7 +143,7 @@ Claude writes the pipeline, runs it and checks the output.
 ## Free and Pro
 
 The CLI is free with no pipeline limits. Pro is $49 one-time and includes a year of updates.
-It adds the crawler, the background scheduler and REST API, any DuckDB extension, and lifts the
+It adds the crawler, the background scheduler, REST API and browser UI, any DuckDB extension, and lifts the
 free tier's DuckDB resource caps. Write to rodrigo.abt@gmail.com to buy it.
 
 © 2026 cuiqanalytics. See [LICENSE](LICENSE).
