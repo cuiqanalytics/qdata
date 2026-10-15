@@ -37,6 +37,7 @@
     <div class="nav-links">
       <a href="#sql">How it works</a>
       <a href="#scrape">Scraping</a>
+      <a href="#ui">UI</a>
       <a href="#features">Features</a>
       <a href="#skill">Claude</a>
       <a href="#pricing">Pricing</a>
@@ -181,6 +182,26 @@ FROM raw_pages WHERE status = 200
     </div>
   </section>
 
+  <section id="ui" class="wrap split">
+    <div class="split-text">
+      <h2>Build and watch pipelines in your browser</h2>
+      <p>Run <code>qdata server start</code> and open <code>http://127.0.0.1:5000/ui</code>. Drag input, transform, validate and output steps onto a canvas, then write each step's SQL in the editor beside it.</p>
+      <p>Switch to Monitor and press Run. Each step's badge changes as it goes from pending to running, completed or cached. Click a failed step to read the DuckDB error.</p>
+      <p>Every step is saved as a numbered <code>.sql</code> file in the pipeline folder. You can edit those files by hand, run them with <code>qdata run</code> or commit them to git.</p>
+      <p class="limits">The UI runs locally and needs Pro, because it uses the background scheduler.</p>
+    </div>
+    <div class="split-demo">
+      <figure class="runboard" aria-label="Monitor mode in the qdata UI after the transform step was edited and the pipeline run again">
+        <ol>
+          <li><span class="n">1</span><span class="what">load_orders <small>001_load_orders.sql</small></span><span class="st hit">cached</span></li>
+          <li><span class="n">2</span><span class="what">by_region <small>002_by_region.sql (edited)</small></span><span class="st ran">completed</span></li>
+          <li><span class="n">3</span><span class="what">export <small>003_export.sql</small></span><span class="st ran">completed</span></li>
+        </ol>
+        <figcaption>Monitor mode after a change to step 2. Step 1's SQL didn't change, so its result came from the cache.</figcaption>
+      </figure>
+    </div>
+  </section>
+
   <section id="features" class="wrap">
     <h2>What comes with every run</h2>
     <div class="features">
@@ -232,6 +253,7 @@ FROM raw_pages WHERE status = 200
         <ul>
           <li>Multi-page crawling: pagination, link following, page cache</li>
           <li>Background scheduler with cron, plus a REST API</li>
+          <li>Browser UI for building pipelines and watching them run</li>
           <li>Any DuckDB extension, set in <code>[config] extensions</code></li>
           <li>Full DuckDB resources: no thread, memory, query-complexity or preview caps</li>
         </ul>
@@ -249,6 +271,7 @@ FROM raw_pages WHERE status = 200
       <details><summary>Can it scrape sites that load content with JavaScript?</summary><p>No. qdata reads the HTML the server sends. Many such sites load their data from a JSON API, which you can see in your browser's network tab. Point an <code>ingest</code> step at that URL and it loads as a table.</p></details>
       <details><summary>Is scraping with it polite?</summary><p>By default, yes: the crawler obeys robots.txt (including Crawl-delay), limits requests per host, and sends the user agent you set. Checking a site's terms of use is still up to you.</p></details>
       <details><summary>How is this different from dbt or Airflow?</summary><p>There's no project framework to learn and no scheduler service to run. A pipeline is a folder of SQL files that runs on your laptop or a single server. When you need a schedule, Pro adds one in the same binary.</p></details>
+      <details><summary>Is there a graphical interface?</summary><p>Yes, with Pro. <code>qdata server start</code> serves a browser UI at <code>http://127.0.0.1:5000/ui</code>. You use it to build pipelines on a canvas and to watch each step run. The steps are saved as ordinary <code>.sql</code> files, so the UI and the command line work on the same pipeline.</p></details>
       <details><summary>What happens if my Pro license lapses?</summary><p>Pro features stop. Everything in the free tier keeps working, and your pipelines and outputs are untouched.</p></details>
       <details><summary>Can an AI assistant use qdata?</summary><p>Yes. Install the Claude Code skill and describe the pipeline you want. Claude writes the SQL or TOML, runs it and checks the output.</p></details>
     </div>
